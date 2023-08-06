@@ -1,7 +1,6 @@
 package com.example.apimarte.ModelView
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -15,7 +14,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     //Variable que instancia al repositorio.
     private val repository: Repository
-
 
     init {
         val baseDeDato = MarsDatabase.getDataBase(application)
@@ -31,13 +29,5 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     fun obtenerLista(): LiveData<List<MarsEntity>> = repository.marsListLiveData
 
 
-    fun imprimirListaEnLog() {
-        val lista = repository.marsListLiveData.value
-        lista?.let {
-            for (item in it) {
-                Log.d("Prueba Repository", "Item: $item")
-            }
-        }
-    }
 
 }

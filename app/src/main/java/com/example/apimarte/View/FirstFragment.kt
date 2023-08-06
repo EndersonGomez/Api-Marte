@@ -1,15 +1,15 @@
 package com.example.apimarte.View
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.apimarte.ModelView.ViewModel
+import com.example.apimarte.R
 import com.example.apimarte.databinding.FragmentFirstBinding
 
 
@@ -22,7 +22,7 @@ class FirstFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -36,14 +36,27 @@ class FirstFragment : Fragment() {
         val adapter = Adapter()
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
-        viewmodel.obtenerLista().observe(viewLifecycleOwner, Observer {
+        viewmodel.obtenerLista().observe(viewLifecycleOwner) {
 
             it?.let {
                 adapter.update(it)
-                viewmodel.imprimirListaEnLog()
             }
 
-        })
+        }
+
+        adapter.seleccionarTerrenoFuncion().observe(viewLifecycleOwner) {
+
+            val bundle = Bundle().apply {
+
+                val priceToString = it.price.toString()
+
+                putString("image", it.image)
+                putString("price", priceToString)
+                putString("type", it.type)
+            }
+
+            findNavController().navigate(R.id.action_firstFragment_to_second_Fragment, bundle)
+        }
     }
 
 

@@ -8,9 +8,9 @@ import androidx.room.PrimaryKey
 data class MarsEntity(
 
     //Atributos de la tabla.
+    val price: Long,
     @PrimaryKey
     val id: String,
-    val price: Long,
     val type: String,
     val image: String
 )

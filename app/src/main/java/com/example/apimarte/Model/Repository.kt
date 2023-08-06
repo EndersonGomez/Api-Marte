@@ -16,7 +16,6 @@ class Repository(private val marsDao: MarsDao) {
     //Funcion que llama los datos de la Api y los guarda en la base de datos.
     suspend fun TraerListaMars() {
 
-        Log.d("Prueba Repository","")
         val service = kotlin.runCatching{ networkService.obtenerDatosApi()}
 
         service.onSuccess {

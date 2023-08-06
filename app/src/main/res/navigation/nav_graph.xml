@@ -9,5 +9,14 @@
         android:id="@+id/firstFragment"
         android:name="com.example.apimarte.View.FirstFragment"
         android:label="fragment_first"
-        tools:layout="@layout/fragment_first" />
+        tools:layout="@layout/fragment_first" >
+        <action
+            android:id="@+id/action_firstFragment_to_second_Fragment"
+            app:destination="@id/second_Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/second_Fragment"
+        android:name="com.example.apimarte.View.Second_Fragment"
+        android:label="fragment_second_"
+        tools:layout="@layout/fragment_second_" />
 </navigation>

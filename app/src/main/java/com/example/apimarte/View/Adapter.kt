@@ -1,24 +1,37 @@
 package com.example.apimarte.View
 
-import android.util.Log
+
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.apimarte.Model.Local.MarsEntity
+import com.example.apimarte.R
 import com.example.apimarte.databinding.MarsListItemBinding
+
+
 class Adapter() : RecyclerView.Adapter<Adapter.MarsViewHolder>() {
 
+    //Instanciamos una lista de la clase MarsEntity.
     private var listMars = listOf<MarsEntity>()
 
+    //Variable que observa un dato mutable del tipo PhoneEntity.
+    private val seleccionarTerreno = MutableLiveData<MarsEntity>()
+
+    @SuppressLint("NotifyDataSetChanged")
     fun update(list: List<MarsEntity>) {
         listMars = list
         notifyDataSetChanged()
-        Log.d("Prueba Adapter", "Funcion update. Item count: ${list.size}")
     }
 
+    //Funcion para seleccionar el item escogido por el usuario.
+    fun seleccionarTerrenoFuncion(): LiveData<MarsEntity> = seleccionarTerreno
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MarsViewHolder {
-        Log.d("Prueba Adapter", "LLamada al oncreateView.")
         return MarsViewHolder(MarsListItemBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
@@ -29,20 +42,26 @@ class Adapter() : RecyclerView.Adapter<Adapter.MarsViewHolder>() {
     override fun onBindViewHolder(holder: MarsViewHolder, position: Int) {
         val item = listMars[position]
         holder.render(item)
-        Log.d("Prueba Adapter", "Item at position $position bound.")
     }
 
-    inner class MarsViewHolder(private val binding: MarsListItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class MarsViewHolder(binding: MarsListItemBinding) :
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
         private val imagen = binding.ivImagen
-        private val price = binding.tvPrice
 
         fun render(lista: MarsEntity) {
-            Log.d("Prueba Adapter", "Rendering item at position ${adapterPosition}: ${lista.image}")
-            Glide.with(imagen).load(lista.image).into(imagen)
-            price.text = lista.type
-            Log.d("Prueba Adapter", "Image loaded successfully for item at position ${adapterPosition}")
+
+                Glide.with(imagen)
+                    .load(lista.image)
+                    .placeholder(R.drawable.icon_downloading)
+                    .error(R.drawable.icon_error)
+                    .into(imagen)
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View) {
+
+            seleccionarTerreno.value = listMars[adapterPosition]
         }
     }
 }

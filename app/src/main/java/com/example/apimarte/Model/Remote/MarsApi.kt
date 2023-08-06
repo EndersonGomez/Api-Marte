@@ -8,6 +8,6 @@ interface MarsApi {
 
     //Metodo http para traer los datos de una api.
     @GET("realestate")
-    fun obtenerDatosApi(): Response<List<MarsRealstate>>
-
+    suspend fun obtenerDatosApi(): Response<List<MarsRealstate>>
 }
+
